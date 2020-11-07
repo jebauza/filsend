@@ -1,0 +1,14 @@
+{
+    "Internal Server Error": "Error Interno del Servidor",
+    "Session closed successfully": "Sesión cerrada correctamente",
+    "Not found": "No encontrado",
+    "Bad Request": "Solicitud Incorrecta",
+    "Save successfully": "Guardado con éxito",
+    "User :state successfully": "Usuario :state con éxito",
+    "deactivated": "desactivado",
+    "activated": "activado",
+    "Successfully authenticated": "Successfully authenticated",
+    "Logged out successfully": "Se ha cerrado sesión correctamente",
+    "Forbidden access": "Acceso Prohibido",
+    "The image name is too long": "El nombre de la imagen es muy largo"
+}
