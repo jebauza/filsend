@@ -43,7 +43,7 @@ class UserStoreUpdateRequest extends FormRequest
                 Rule::unique('users', 'email')->ignore($user_id)
             ],
             'password' => ($user_id ? 'nullable' : 'required') . '|string|min:8|max:255',
-            'image' => 'nullable|file',
+            'image' => 'nullable|file|image',
             'roles' => 'array',
             'roles.*' => 'integer|exists:roles,id',
             'permissions' => 'array',
@@ -55,7 +55,7 @@ class UserStoreUpdateRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             if(empty($validator->errors()->all())){
-                $this->checkImageName($validator);
+                //$this->checkImageName($validator);
             }
         });
     }

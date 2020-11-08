@@ -35,7 +35,7 @@ class UserCmsApiController extends Controller
             $new_user->secondname = $request->secondname ?? null;
             $new_user->password = Hash::make($request->password);
             if($request->file('image')) {
-                $image_name = Str::random(10).'_'.$request->file('image')->getClientOriginalName();
+                $image_name = Str::random(10)."_".Str::limit($new_user->fullName, 200).(strrchr($request->file('image')->getClientOriginalName(), ".") ?? '');
                 $path = Storage::putFileAs('public/users', $request->file('image'), $image_name);
                 $new_user->profile_picture = $path;
             }
@@ -43,7 +43,10 @@ class UserCmsApiController extends Controller
             $new_user->updated_by = $authUser->id;
             $new_user->save();
             $new_user->syncRoles($request->roles);
-            $new_user->syncPermissions($request->permissions);
+            $base_permission_ids = DB::table('permissions')
+                                    ->whereIn('name', config('filsend.basic_user_permissions'))
+                                    ->pluck('id')->toArray();
+            $new_user->syncPermissions(array_merge($request->permissions ?? [], $base_permission_ids));
 
             DB::commit();
             return response()->json(['msg'=>__('Save successfully'), 'user'=>$new_user->refresh()], 201);
@@ -74,7 +77,7 @@ class UserCmsApiController extends Controller
                 $user->password = Hash::make($request->password);
             }
             if($request->file('image')) {
-                $image_name = Str::random(10).'_'.$request->file('image')->getClientOriginalName();
+                $image_name = Str::random(10)."_".Str::limit($user->fullName, 200).(strrchr($request->file('image')->getClientOriginalName(), ".") ?? '');
                 $path = Storage::putFileAs('public/users', $request->file('image'), $image_name);
                 if($user->profile_picture && Storage::exists($user->profile_picture)) {
                     Storage::delete($user->profile_picture);

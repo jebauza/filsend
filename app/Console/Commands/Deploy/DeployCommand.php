@@ -59,9 +59,8 @@ class DeployCommand extends Command
             $array_permissions[] = $p['name'];
         }
 
-        $role = Rol::updateOrCreate(['name' => 'Super Admin']);
-        $role->syncPermissions($array_permissions);
-
+        $role_superadmin = Rol::updateOrCreate(['name' => 'Super Admin']);
+        $role_superadmin->syncPermissions($array_permissions);
         if(!$user_admin = User::where('username','jebauza')->first()) {
             $user_admin = factory(User::class)->create([
                     'email' => 'jebauza@gmail.com',
@@ -72,7 +71,6 @@ class DeployCommand extends Command
                     'password' => Hash::make('password'),
                 ]);
         }
-
-        $user_admin->assignRole($role->name);
+        $user_admin->assignRole($role_superadmin->name);
     }
 }

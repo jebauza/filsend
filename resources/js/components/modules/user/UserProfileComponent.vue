@@ -17,7 +17,7 @@
                         </div>
 
                         <h3 class="profile-username text-center" v-text="user.fullName"></h3>
-                        <p class="text-muted text-center">Rol</p>
+                        <!-- <p class="text-muted text-center">Rol</p> -->
                     </div>
                 </div>
 

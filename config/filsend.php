@@ -16,5 +16,10 @@ return [
         ['name' => 'roles.store', 'display_name' => 'Crear Roles'],
         ['name' => 'roles.show', 'display_name' => 'Ver Rol'],
         ['name' => 'roles.update', 'display_name' => 'Modificar Rol'],
+    ],
+
+    'basic_user_permissions' => [
+        'users.index',
     ]
+
 ];
