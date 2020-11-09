@@ -24,7 +24,7 @@
                 </div>
             </div>
 
-            <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent nav-compact user-panel mb-3"
+            <!-- <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent nav-compact user-panel mb-3"
                 data-widget="treeview" role="menu" data-accordion="false">
 
                 <li class="nav-item">
@@ -33,7 +33,7 @@
                         <p> Cerrar Sección</p>
                     </a>
                 </li>
-            </ul>
+            </ul> -->
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
@@ -42,8 +42,8 @@
 
                     <li class="nav-item has-treeview menu-open">
                         <router-link :to="{path: '/home'}" :class="['nav-link', isActive('/home') ? 'active' : '']">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p> Dashboard</p>
+                            <i class="nav-icon fas fa-house-user"></i>
+                            <p> Home</p>
                         </router-link>
                     </li>
 
@@ -53,30 +53,23 @@
                         <li v-if="userPermissions.includes('users.index')" class="nav-item">
                             <router-link :to="{path: '/users'}" :class="['nav-link', isActive('/users') ? 'active' : '']">
                                 <i class="nav-icon fas fa-users"></i>
-                                <p>Usuarios</p>
+                                <p> Usuarios</p>
                             </router-link>
                         </li>
                         <li v-if="userPermissions.includes('roles.index')" class="nav-item">
                             <router-link :to="{path: '/roles'}" :class="['nav-link', isActive('/roles') ? 'active' : '']">
                                 <i class="nav-icon fas fa-unlock-alt"></i>
-                                <p>Roles</p>
+                                <p> Roles</p>
                             </router-link>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-key"></i>
-                                <p>Permisos</p>
-                            </a>
                         </li>
                     </template>
 
-
-                    <li class="nav-header">REPORTES</li>
+                    <li class="nav-header">MENU</li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-file-export"></i>
-                            <p>Pedidos</p>
-                        </a>
+                        <router-link :to="{path: '/files'}" :class="['nav-link', isActive('/files') ? 'active' : '']">
+                            <i class="nav-icon fas fa-archive"></i>
+                            <p> Arcivos</p>
+                        </router-link>
                     </li>
 
                 </ul>

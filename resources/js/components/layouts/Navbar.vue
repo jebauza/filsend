@@ -121,10 +121,23 @@
                     <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                    <i class="fas fa-th-large"></i>
+
+            <li class="nav-item dropdown ml-3">
+                <a class="user-profile dropdown-toggle text-white" data-toggle="dropdown" href="#">
+                    <img v-if="auth_user.urlProfilePicture" :src="auth_user.urlProfilePicture" class="rounded-circle" width="40" height="40" :alt="auth_user.username">
+                    <img v-else :src="basepath + '/img/user-default.png'" class="rounded-circle" alt="Cinque Terre" width="40" height="40">
                 </a>
+                <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
+                    <a href="#" class="dropdown-item" >
+                        <i class="fas fa-address-card"></i> Perfil
+                    </a>
+
+                    <a href="#" class="dropdown-item"
+                        @click.prevent="logout" v-loading.fullscreen.lock="fullscreenLoading">
+                        <i class="fas fa-sign-out-alt"></i> Salir
+                    </a>
+
+                </div>
             </li>
         </ul>
     </nav>
@@ -143,7 +156,8 @@ export default {
     data() {
         return {
             search: '',
-            links: []
+            links: [],
+            fullscreenLoading: false
         }
     },
     methods: {
@@ -183,6 +197,17 @@ export default {
                     }
                 });
 
+            });
+        },
+        logout() {
+            this.fullscreenLoading = true;
+            const url = '/cmsapi/auth/logout';
+            axios.get(url)
+            .then(res => {
+                window.location.href = '/login';
+                //this.fullscreenLoading = false;
+                /* this.$router.push({name: 'login'});
+                location.reload(); */
             });
         }
     }
