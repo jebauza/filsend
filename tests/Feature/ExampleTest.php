@@ -15,9 +15,11 @@ class ExampleTest extends TestCase
         $response->assertStatus(200);
     } */
 
-    /* public function testBasicTest()
+    public function testBasicTest()
     {
-        $text = "cuba.jpg";
-        dd(strrchr($text, "."));
-    } */
+        $col1 = collect([1,3,6]);
+        $col2 = collect([2,6,8]);
+
+        dd($col1->merge($col2));
+    }
 }

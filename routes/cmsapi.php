@@ -41,5 +41,14 @@ Route::middleware(['ajax', 'auth'])->name('cmsapi.')->group(function () {
         });
     });
 
+    /* Files */
+    Route::prefix('files')->group(function () {
+
+        Route::prefix('sendings')->name('sendings.')->group(function () {
+            Route::get('/can_send_users', 'CMS\Api\SendingCmsApiController@can_send_users')->name('can_send_users');
+            Route::post('/store', 'CMS\Api\SendingCmsApiController@store')->name('store');
+        });
+    });
+
 });
 

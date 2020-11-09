@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sending extends Model
 {
-    protected $table = 'files';
+    protected $table = 'sendings';
 
     protected $fillable = ['from_user', 'to_user', 'file_id', 'message'];
 
