@@ -18,9 +18,10 @@ class SendingCmsApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $auth_user = $request->user();
+        return $auth_user->sent_files()->with('file','to_user')->latest()->paginate();
     }
 
     public function can_send_users(Request $request)

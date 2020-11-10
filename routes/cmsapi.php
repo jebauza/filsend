@@ -45,6 +45,7 @@ Route::middleware(['ajax', 'auth'])->name('cmsapi.')->group(function () {
     Route::prefix('files')->group(function () {
 
         Route::prefix('sendings')->name('sendings.')->group(function () {
+            Route::get('/', 'CMS\Api\SendingCmsApiController@index')->name('index');
             Route::get('/can_send_users', 'CMS\Api\SendingCmsApiController@can_send_users')->name('can_send_users');
             Route::post('/store', 'CMS\Api\SendingCmsApiController@store')->name('store');
         });
