@@ -85,8 +85,8 @@ class UserCmsApiController extends Controller
             $user->updated_by = $authUser->id;
             $user->save();
             if($user->can('users.update')) {
-                $user->syncRoles($request->roles);
-                $user->syncPermissions($request->permissions);
+                $request->roles ? $user->syncRoles($request->roles) : '';
+                $request->permissions ? $user->syncPermissions($request->permissions) : '';
             }
 
             DB::commit();
