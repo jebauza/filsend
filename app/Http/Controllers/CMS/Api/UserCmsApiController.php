@@ -43,10 +43,7 @@ class UserCmsApiController extends Controller
             $new_user->updated_by = $authUser->id;
             $new_user->save();
             $new_user->syncRoles($request->roles);
-            $base_permission_ids = DB::table('permissions')
-                                    ->whereIn('name', config('filsend.basic_user_permissions'))
-                                    ->pluck('id')->toArray();
-            $new_user->syncPermissions(array_merge($request->permissions ?? [], $base_permission_ids));
+            $new_user->syncPermissions($request->permissions);
 
             DB::commit();
             return response()->json(['msg'=>__('Save successfully'), 'user'=>$new_user->refresh()], 201);
@@ -62,8 +59,9 @@ class UserCmsApiController extends Controller
     public function update(UserStoreUpdateRequest $request, $id)
     {
         $path = null;
-
         $user = User::findOrfail($id);
+        Gate::authorize('users.updateAndShow', ['users.update', $user]);
+
         try {
             DB::beginTransaction();
             $authUser = $request->user();
@@ -86,8 +84,10 @@ class UserCmsApiController extends Controller
             }
             $user->updated_by = $authUser->id;
             $user->save();
-            $user->syncRoles($request->roles);
-            $user->syncPermissions($request->permissions);
+            if($user->can('users.update')) {
+                $user->syncRoles($request->roles);
+                $user->syncPermissions($request->permissions);
+            }
 
             DB::commit();
             return response()->json(['msg'=>__('Save successfully'), 'user'=>$user->refresh()], 200);
@@ -127,6 +127,7 @@ class UserCmsApiController extends Controller
     public function show(Request $request, $id)
     {
         $user = User::findOrfail($id);
+        Gate::authorize('users.updateAndShow', ['users.show', $user]);
         return $user;
     }
 

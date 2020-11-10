@@ -10,5 +10,7 @@
     "Successfully authenticated": "Successfully authenticated",
     "Logged out successfully": "Se ha cerrado sesión correctamente",
     "Forbidden access": "Acceso Prohibido",
-    "The image name is too long": "El nombre de la imagen es muy largo"
+    "The image name is too long": "El nombre de la imagen es muy largo",
+    "Successfully blocked": "Bloqueado con éxito",
+    "Successfully unlocked": "Desbloqueado con éxito"
 }

@@ -24,6 +24,12 @@ class SendingCmsApiController extends Controller
         return $auth_user->sent_files()->with('file','to_user')->latest()->paginate();
     }
 
+    public function received(Request $request)
+    {
+        $auth_user = $request->user();
+        return $auth_user->received_files()->with('file','from_user')->latest()->paginate();
+    }
+
     public function can_send_users(Request $request)
     {
         $auth_user = $request->user();
@@ -34,6 +40,41 @@ class SendingCmsApiController extends Controller
                         ->get();
 
         return $users;
+    }
+
+    public function users_not_blocked(Request $request)
+    {
+        $auth_user = $request->user();
+        $blocked_users_id = $auth_user->blocked_users()->get()->pluck('id');
+        $users = User::where('id', '!=', $auth_user->id)
+                        ->whereNotIn('id', $blocked_users_id->toArray())
+                        ->get();
+
+        return $users;
+    }
+
+    public function blocked_users(Request $request)
+    {
+        $auth_user = $request->user();
+
+        return $auth_user->blocked_users()->orderBY('email')->get();
+    }
+
+    public function lock_unlock(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|integer',
+            'action' => 'required|string|in:lock,unlock'
+        ]);
+
+        $user = User::findOrfail($request->user_id);
+        if($request->action == 'lock') {
+            $request->user()->blocked_users()->attach($user->id);
+            return response()->json(['msg'=> __('Successfully blocked')], 200);
+        }else {
+            $request->user()->blocked_users()->detach($user->id);
+            return response()->json(['msg'=> __('Successfully unlocked')], 200);
+        }
     }
 
     public function store(Request $request)

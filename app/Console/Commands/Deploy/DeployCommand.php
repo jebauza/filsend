@@ -43,10 +43,12 @@ class DeployCommand extends Command
     {
         $this->createUpdatePermissions();
 
-        $this->info('Scripts launched successfully');
+        $this->info('Scripts launched successfully. administration (Email: superadmin@filsend.com, Password: password)');
     }
 
-    private function createUpdatePermissions() {
+    private function createUpdatePermissions()
+    {
+        $this->call('migrate');
 
         $permissions = config('filsend.permissions');
         $array_permissions = [];
@@ -61,16 +63,20 @@ class DeployCommand extends Command
 
         $role_superadmin = Rol::updateOrCreate(['name' => 'Super Admin']);
         $role_superadmin->syncPermissions($array_permissions);
-        if(!$user_admin = User::where('username','jebauza')->first()) {
+        if(!$user_admin = User::where('username','superadmin')->first()) {
             $user_admin = factory(User::class)->create([
-                    'email' => 'jebauza@gmail.com',
-                    'firstname' => 'Jorge',
-                    'secondname' => 'Ernesto',
-                    'lastname' => 'Bauza Becerra',
-                    'username' => 'jebauza',
+                    'email' => 'superadmin@filsend.com',
+                    'firstname' => 'Superadmin',
+                    'secondname' => null,
+                    'lastname' => 'Superadmin',
+                    'username' => 'superadmin',
                     'password' => Hash::make('password'),
                 ]);
         }
         $user_admin->assignRole($role_superadmin->name);
+
+        $this->call('db:seed', [
+            '--class' => 'UsersTableSeeder'
+        ]);
     }
 }

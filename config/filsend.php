@@ -18,8 +18,4 @@ return [
         ['name' => 'roles.update', 'display_name' => 'Modificar Rol'],
     ],
 
-    'basic_user_permissions' => [
-        'users.index',
-    ]
-
 ];

@@ -78,7 +78,7 @@
                                             <template>
                                                 <div class="user-block">
                                                     <img v-if="user.urlProfilePicture" :src="user.urlProfilePicture" :alt="user.username" class="profile-avatar-img img-fluid img-circle">
-                                                    <img v-else src="/img/avatar.png" :alt="user.username" class="profile-avatar-img img-fluid img-circle">
+                                                    <img v-else src="/img/user-default.png" :alt="user.username" class="profile-avatar-img img-fluid img-circle">
                                                 </div>
                                             </template>
                                         </td>

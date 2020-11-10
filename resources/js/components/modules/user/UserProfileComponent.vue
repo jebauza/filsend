@@ -13,7 +13,7 @@
                     <div class="card-body box-profile">
                         <div class="text-center">
                             <img v-if="user.urlProfilePicture" :src="user.urlProfilePicture" class="profile-user-img img-fluid img-circle img-max-height" :alt="user.username">
-                            <img v-else class="profile-user-img img-fluid img-circle img-max-height" src="/img/avatar.png" :alt="user.username">
+                            <img v-else class="profile-user-img img-fluid img-circle img-max-height" src="/img/user-default.png" :alt="user.username">
                         </div>
 
                         <h3 class="profile-username text-center" v-text="user.fullName"></h3>
@@ -187,6 +187,9 @@ export default {
                 this.loaded = true;
             })
             .catch(err => {
+                if(err.response && err.response.status == 403) {
+                    this.$router.push({name: 'home'});
+                }
                 console.error(err);
                 this.loaded = true;
             })

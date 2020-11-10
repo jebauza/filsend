@@ -5,19 +5,19 @@
 
         <div class="card-header d-flex p-0">
             <ul class="nav nav-pills p-2">
-                <li class="nav-item"><a class="nav-link active" href="#tab_send" data-toggle="tab">Enviados</a></li>
-                <li class="nav-item"><a class="nav-link" href="#tab_received" data-toggle="tab">Recibidos</a></li>
+                <li class="nav-item"><a @click="loadAll()" class="nav-link active" href="#tab_send" data-toggle="tab">Enviados</a></li>
+                <li class="nav-item"><a @click="loadAll()" class="nav-link" href="#tab_received" data-toggle="tab">Recibidos</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
                         Usuarios <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#tab_3" data-toggle="tab">Bloqueados</a>
+                        <a @click="loadAll()" class="dropdown-item" href="#tab_blocked_users" data-toggle="tab">Bloqueados</a>
                     </div>
                 </li>
             </ul>
             <div class="ml-auto px-2 pt-2">
-                <button v-if="authUserPermissions.includes('roles.store')" @click="showModalSendFile()"
+                <button @click="showModalSendFile()"
                     class="btn btn-info btn-sm">
                     <i class="fas fa-plus-square"> Enviar</i>
                 </button>
@@ -32,11 +32,11 @@
                 </div>
 
                 <div class="tab-pane" id="tab_received">
-                    Recibidos
+                    <file-list ref="fileListReceived" :typeList="'received'"></file-list>
                 </div>
 
-                <div class="tab-pane" id="tab_3">
-                    usuarios Bloqueados
+                <div class="tab-pane" id="tab_blocked_users">
+                    <blocked-users ref="blockedUsers"></blocked-users>
                 </div>
             </div>
         </div>
@@ -105,9 +105,10 @@
 
 <script>
 import FileList from './FileListComponent';
+import BlockedUsers from './FileBlockedUsersComponent';
 
 export default {
-    components: {FileList},
+    components: {FileList, BlockedUsers},
     created() {
         this.getUsersCanSend();
     },
@@ -127,7 +128,7 @@ export default {
     },
     methods: {
         getUsersCanSend() {
-            const url = '/cmsapi/files/sendings/can_send_users';
+            const url = '/cmsapi/files/sendings/can-send-users';
             axios.get(url)
             .then(res => {
                 this.users_can_send = res.data
@@ -169,7 +170,7 @@ export default {
             const url = '/cmsapi/files/sendings/store'
             axios.post(url, formData, config)
             .then(res => {
-                this.$refs.fileListSend.getFiles();
+                this.loadAll();
                 this.fullscreenLoading = false;
                 Swal.fire({
                     title: res.data.msg,
@@ -198,6 +199,11 @@ export default {
                     });
                 }
             })
+        },
+        loadAll() {
+            this.$refs.fileListSend.getFiles();
+            this.$refs.fileListReceived.getFiles();
+            this.$refs.blockedUsers.getBlockedUsers();
         }
 
     },
