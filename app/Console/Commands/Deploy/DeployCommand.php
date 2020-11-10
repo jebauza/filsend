@@ -75,8 +75,13 @@ class DeployCommand extends Command
         }
         $user_admin->assignRole($role_superadmin->name);
 
-        $this->call('db:seed', [
-            '--class' => 'UsersTableSeeder'
-        ]);
+        if(User::count() < 2) {
+            $this->call('db:seed', [
+                '--class' => 'UsersTableSeeder'
+            ]);
+        }
+
+        $this->call('config:clear');
+        $this->call('cache:clear');
     }
 }
