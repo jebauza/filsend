@@ -3,7 +3,7 @@
     <div class="login-box">
         <div class="login-logo">
             <router-link :to="{name:'login'}">
-                <b>Iniciar Sección</b>
+                <b>Filsend</b>
             </router-link>
         </div>
 

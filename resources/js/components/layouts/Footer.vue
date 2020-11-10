@@ -1,6 +1,6 @@
 <template>
     <footer class="main-footer">
-        © {{ now.format('YYYY') }} MySellDapot
+        © {{ now.format('YYYY') }} Filsend
     </footer>
 </template>
 

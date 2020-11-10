@@ -2,6 +2,9 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import moment from 'moment';
+Vue.prototype.moment = moment;
+
 /* ElementUI - Biblioteca para interfaz de usuario */
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';

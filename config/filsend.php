@@ -16,5 +16,6 @@ return [
         ['name' => 'roles.store', 'display_name' => 'Crear Roles'],
         ['name' => 'roles.show', 'display_name' => 'Ver Rol'],
         ['name' => 'roles.update', 'display_name' => 'Modificar Rol'],
-    ]
+    ],
+
 ];

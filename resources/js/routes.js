@@ -81,6 +81,17 @@ export const routes = [
             ]
         }
     },
+    {
+        path: '/files',
+        name: 'files',
+        component: require('./components/modules/file/FileComponent.vue').default,
+        meta: {
+            breadcrumb: [
+                { name: 'Home', link: '/home' },
+                { name: 'Archivos' }
+            ]
+        }
+    },
 
 
 

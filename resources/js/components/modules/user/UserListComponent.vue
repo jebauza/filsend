@@ -35,7 +35,11 @@
                             </div>
                             <div class="form-group col-sm-4 col-md-4 col-lg-2">
                                 <label class="control-label">Estado</label>
-                                <input v-model="searches.state" type="text" class="form-control" name="state" placeholder="Estado">
+                                <select v-model="searches.state" class="form-control custom-select" name="state">
+                                    <option value="" selected></option>
+                                    <option value="A">Activo</option>
+                                    <option value="I">Inhabilitado</option>
+                                </select>
                             </div>
                             <div class="form-group col-auto mt-4 pt-2">
                                 <button @click="clearSearches()" title="Eliminar Filtros" type="button"
@@ -69,12 +73,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(user, index) in users.data" :key="user.id">
+                                    <tr v-for="(user, index) in users.data" :key="user.id" :class="user.state == 'I' ? 'table-danger' : ''">
                                         <td>
                                             <template>
                                                 <div class="user-block">
                                                     <img v-if="user.urlProfilePicture" :src="user.urlProfilePicture" :alt="user.username" class="profile-avatar-img img-fluid img-circle">
-                                                    <img v-else src="/img/avatar.png" :alt="user.username" class="profile-avatar-img img-fluid img-circle">
+                                                    <img v-else src="/img/user-default.png" :alt="user.username" class="profile-avatar-img img-fluid img-circle">
                                                 </div>
                                             </template>
                                         </td>
@@ -82,31 +86,40 @@
                                         <td v-text="user.email"></td>
                                         <td v-text="user.username"></td>
                                         <td>
-                                            <span v-if="user.state == 'A'" class="badge badge-success">Activo</span>
-                                            <span v-else class="badge badge-danger">Inactivo</span>
+                                            <el-tooltip v-if="user.state == 'A'" class="item" effect="dark" content="Activo" placement="bottom">
+                                                <span class="badge badge-success"><i class="fas fa-user-check"></i></span>
+                                            </el-tooltip>
+                                            <el-tooltip v-else class="item" effect="dark" content="Inactivo" placement="bottom">
+                                                <span class="badge badge-danger"><i class="fas fa-user-lock"></i></span>
+                                            </el-tooltip>
                                         </td>
                                         <td>
-                                            <router-link :to="{name: 'profile', params: {id: user.id}}" class="btn btn-flat btn-primary btn-xs" title="ver">
-                                                <i class="fas fa-eye"></i>
-                                            </router-link>
+                                            <el-tooltip class="item" effect="dark" content="Ver Perfil" placement="bottom">
+                                                <router-link :to="{name: 'profile', params: {id: user.id}}" class="btn btn-flat btn-primary btn-xs">
+                                                    <i class="fas fa-eye"></i>
+                                                </router-link>
+                                            </el-tooltip>
                                             <template v-if="user.state == 'A'">
-                                                <button v-if="authUserPermissions.includes('users.update')" @click="openModalAddEdit('edit', user)"
-                                                    class="btn btn-flat btn-info btn-xs" title="Editar">
-                                                    <i class="fas fa-pencil-alt"></i>
-                                                </button>
-                                                <button class="btn btn-flat btn-success btn-xs" title="Permiso">
-                                                    <i class="fas fa-key"></i>
-                                                </button>
-                                                <button v-if="authUserPermissions.includes('users.deactivate')" @click="setUserState('I', user)"
-                                                    class="btn btn-flat btn-danger btn-xs" title="Desactivar">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
+                                                <el-tooltip class="item" effect="dark" content="Editar" placement="bottom">
+                                                    <button v-if="authUserPermissions.includes('users.update')" @click="openModalAddEdit('edit', user)"
+                                                        class="btn btn-flat btn-info btn-xs">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                    </button>
+                                                </el-tooltip>
+                                                <el-tooltip class="item" effect="dark" content="Inhabilitar" placement="bottom">
+                                                    <button v-if="authUserPermissions.includes('users.deactivate')" @click="setUserState('I', user)"
+                                                        class="btn btn-flat btn-danger btn-xs">
+                                                        <i class="fas fa-lock"></i>
+                                                    </button>
+                                                </el-tooltip>
                                             </template>
                                             <template v-else>
-                                                <button v-if="authUserPermissions.includes('users.activate')" @click="setUserState('A', user)"
-                                                    class="btn btn-flat btn-success btn-xs" title="Activar">
-                                                    <i class="fas fa-check"></i>
-                                                </button>
+                                                <el-tooltip class="item" effect="dark" content="Habilitar" placement="bottom">
+                                                    <button v-if="authUserPermissions.includes('users.activate')" @click="setUserState('A', user)"
+                                                        class="btn btn-flat btn-success btn-xs">
+                                                        <i class="fas fa-unlock"></i>
+                                                    </button>
+                                                </el-tooltip>
                                             </template>
                                         </td>
                                     </tr>

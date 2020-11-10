@@ -31,5 +31,15 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('users.set-state', function ($user, $permission) {
             return $user->can($permission);
         });
+
+        Gate::define('users.updateAndShow', function ($auth_user, $permission, $user) {
+            if($auth_user->can($permission)) {
+                return true;
+            }else if($auth_user->id === $user->id){
+                return true;
+            }
+
+            return false;
+        });
     }
 }
